@@ -1,17 +1,15 @@
-import re
 import streamlit as st
+import re
+
 def check_password_strength(password):
     score = 0
-    remarks = ""
 
-    # Criteria for scoring
     length_error = len(password) < 8
     digit_error = re.search(r"\d", password) is None
     uppercase_error = re.search(r"[A-Z]", password) is None
     lowercase_error = re.search(r"[a-z]", password) is None
     symbol_error = re.search(r"[!@#$%^&*(),.?\":{}|<>]", password) is None
 
-    # Check each criteria
     if not length_error:
         score += 1
     if not digit_error:
@@ -23,22 +21,23 @@ def check_password_strength(password):
     if not symbol_error:
         score += 1
 
-    # Remarks based on score
     if score == 5:
-        remarks = "Very Strong"
+        return "Very Strong", score
     elif score == 4:
-        remarks = "Strong"
+        return "Strong", score
     elif score == 3:
-        remarks = "Moderate"
+        return "Moderate", score
     elif score == 2:
-        remarks = "Weak"
+        return "Weak", score
     else:
-        remarks = "Very Weak"
+        return "Very Weak", score
 
-    return score, remarks
+# Streamlit App
+st.title("🔐 Password Strength Meter")
 
-# Example usage
-if __name__ == "__main__":
-    pwd = input("Enter your password: ")
-    score, strength = check_password_strength(pwd)
-    print(f"Password Strength: {strength} (Score: {score}/5)")
+password = st.text_input("Enter your password", type="password")
+
+if password:
+    strength, score = check_password_strength(password)
+    st.write(f"**Strength**: {strength}")
+    st.progress(score / 5)
