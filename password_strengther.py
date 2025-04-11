@@ -11,7 +11,7 @@ st. markdown("""
            </style>
            """,unsafe_allow_html=True)
 #Page Title and Description
-st.Title("🔒Password Strength Generator")
+st.title("🔒Password Strength Generator")
 st.write("Enter your password below to check its security level.🔍")
 
 #Function to check password strength
